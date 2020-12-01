@@ -1,10 +1,9 @@
-<template>
-  <!-- <header>Vue 3 Demo</header>
-  <main>Main content</main>
-  <footer>Footer info</footer> -->
-  <div>
-    Username: {{user.username}}
-  </div>
+<template lang='pug'>
+//  <header>Vue 3 Demo</header>
+//-  <main>Main content</main>
+//  <footer>Footer info</footer>
+div
+  |Username: {{user.username}}
 </template>
 
 <script>
@@ -23,17 +22,17 @@ export default {
         isAdmin: true
       }
     }
-  }
+  },
+
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang='stylus'>
+#app
+  font-family Avenir, Helvetica, Arial, sans-serif
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
+  text-align center
+  color #2c3e50
+  margin-top 60px
 </style>
