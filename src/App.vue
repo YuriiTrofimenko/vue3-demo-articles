@@ -27,6 +27,11 @@ export default {
       return `${this.user.firstName} ${this.user.lastName}`
     }
   },
+  methods: {
+    followUser () {
+      this.followers++
+    }
+  }
 }
 </script>
 
