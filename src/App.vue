@@ -1,49 +1,12 @@
 <template lang='pug'>
-.app
-  span Username {{user.username}} - {{fullName}}
-  strong Followers: {{followers}}
-  button(@click="followUser") follow
+UserProfile
 </template>
 
 <script>
-
+import UserProfile from './components/UserProfile'
 export default {
   name: 'App',
-  data () {
-    return {
-      followers: 0,
-      user: {
-        id: 1,
-        username: 'YuriiTrofimenko',
-        firstName: 'Yurii',
-        lastName: 'Trofimenko',
-        email: 'tyaa@ukr.net',
-        isAdmin: true
-      }
-    }
-  },
-  computed: {
-    fullName () {
-      return `${this.user.firstName} ${this.user.lastName}`
-    }
-  },
-  methods: {
-    followUser () {
-      this.followers++
-    }
-  },
-  mounted () {
-    this.followUser()
-    // setTimeout(() => this.followers--, 5000)
-    // setTimeout(() => this.followers++, 5000)
-  },
-  watch: {
-    followers (newFollowersCount, oldFollowersCount) {
-      if (newFollowersCount < oldFollowersCount) {
-        alert(`User ${this.user.username} has gained a follower`)
-      }
-    }
-  }
+  components: { UserProfile }
 }
 </script>
 
@@ -55,15 +18,6 @@ export default {
   text-align center
   color #2c3e50
   margin-top 60px
-</style>
-
-<style lang='stylus' scoped>
-.app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  display flex
-  flex-direction column
-  text-align center
-  color #2c3e50
+  min-height 100hv
+  background-color #f3f5fa
 </style>
