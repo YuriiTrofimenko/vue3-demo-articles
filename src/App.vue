@@ -31,6 +31,9 @@ export default {
     followUser () {
       this.followers++
     }
+  },
+  mounted () {
+    this.followUser()
   }
 }
 </script>
