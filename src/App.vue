@@ -34,6 +34,15 @@ export default {
   },
   mounted () {
     this.followUser()
+    // setTimeout(() => this.followers--, 5000)
+    // setTimeout(() => this.followers++, 5000)
+  },
+  watch: {
+    followers (newFollowersCount, oldFollowersCount) {
+      if (newFollowersCount < oldFollowersCount) {
+        alert(`User ${this.user.username} has gained a follower`)
+      }
+    }
   }
 }
 </script>
