@@ -1,9 +1,8 @@
 <template lang='pug'>
-//  <header>Vue 3 Demo</header>
-//-  <main>Main content</main>
-//  <footer>Footer info</footer>
-div
-  |Username: {{user.username}}
+.app
+  span Username {{user.username}} - {{fullName}}
+  strong Followers: {{followers}}
+  button(@click="followUser") follow
 </template>
 
 <script>
@@ -23,7 +22,11 @@ export default {
       }
     }
   },
-
+  computed: {
+    fullName () {
+      return `${this.user.firstName} ${this.user.lastName}`
+    }
+  },
 }
 </script>
 
@@ -35,4 +38,15 @@ export default {
   text-align center
   color #2c3e50
   margin-top 60px
+</style>
+
+<style lang='stylus' scoped>
+.app
+  font-family Avenir, Helvetica, Arial, sans-serif
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
+  display flex
+  flex-direction column
+  text-align center
+  color #2c3e50
 </style>
