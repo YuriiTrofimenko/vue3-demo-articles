@@ -8,8 +8,10 @@
       |User
     .user-profile__follower-count
       strong Followers: {{followers}}
+    div(v-if="favouriteArticleId")
+      |Favourite article is "{{user.articles.find(a => a.id === favouriteArticleId).title}}"
   .user-profile__articles-wrapper
-    ArticleItem(v-for="article in user.articles" :key="article.id" :article="article")
+    ArticleItem(v-for="article in user.articles" :key="article.id" :article="article" v-on:favourite="toggleFavourite")
 </template>
 
 <script>
@@ -34,7 +36,8 @@ export default {
           { id: 2, title: 'Lorem ipsum dolor', content: '2 - lorem ipsum dolor sit amet' },
           { id: 3, title: 'The third article', content: '3 - lorem ipsum dolor sit amet' }
         ]
-      }
+      },
+      favouriteArticleId: null
     }
   },
   mounted () {
@@ -55,6 +58,10 @@ export default {
   methods: {
     followUser () {
       this.followers++
+    },
+    toggleFavourite (favouriteArticleId) {
+      // console.log(favouriteArticleId)
+      this.favouriteArticleId = favouriteArticleId
     }
   }
 }
