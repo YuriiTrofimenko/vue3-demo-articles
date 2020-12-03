@@ -10,9 +10,11 @@
       strong Followers: {{followers}}
     div(v-if="favouriteArticleId")
       |Favourite article is "{{user.articles.find(a => a.id === favouriteArticleId).title}}"
-    form.create-article-panel(@submit.prevent="createNewArticle")
+    form.create-article-panel(@submit.prevent="createNewArticle" :class="{ '--exceeded': newArticleCharacterCount > 180 }")
+      strong New Article
       label(for="newArticle")
-        strong New Article
+        strong Content
+        |  ({{ newArticleCharacterCount }}/180)
       textarea#newArticle(rows="4" v-model="newArticleContent")
       .create-article-type
         label(for="newArticleType")
@@ -65,6 +67,9 @@ export default {
   computed: {
     fullName () {
       return `${this.user.firstName} ${this.user.lastName}`
+    },
+    newArticleCharacterCount () {
+      return this.newArticleContent.length
     }
   },
   watch: {
@@ -146,4 +151,11 @@ export default {
       background-color #6c9
       color white
       font-weight bold
+  &.--exceeded
+    color red
+    border-color red
+    .create-article-panel__submit
+      button
+        background-color red
+        color white
 </style>
