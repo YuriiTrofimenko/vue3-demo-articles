@@ -2,6 +2,10 @@
 .user-profile
   .user-profile__user-panel
     h1.user-profile__username @{{ user.username }}
+    .user-profile__admin-badge(v-if="user.isAdmin")
+      |Admin
+    .user-profile__admin-badge(v-else)
+      |User
     .user-profile__follower-count
       strong Followers: {{followers}}
 </template>
@@ -61,4 +65,11 @@ export default {
     margin-bottom auto
     h1
       margin 0
+    .user-profile__admin-badge
+      background darkgreen
+      color white
+      border-radius 5px
+      margin-right auto
+      padding 0 10px
+      font-weight bold
 </style>
