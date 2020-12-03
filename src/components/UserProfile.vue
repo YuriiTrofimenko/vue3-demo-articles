@@ -8,6 +8,9 @@
       |User
     .user-profile__follower-count
       strong Followers: {{followers}}
+  .user-profile__articles-wrapper
+    .user-profile__article(v-for="article in user.articles" :key="article.id")
+      |{{article.title}}
 </template>
 
 <script>
@@ -22,7 +25,12 @@ export default {
         firstName: 'Yurii',
         lastName: 'Trofimenko',
         email: 'tyaa@ukr.net',
-        isAdmin: true
+        isAdmin: true,
+        articles: [
+          { id: 1, title: 'Hello VUE 3!' },
+          { id: 2, title: 'Lorem ipsum dolor' },
+          { id: 3, title: 'The third article' }
+        ]
       }
     }
   },
@@ -49,7 +57,7 @@ export default {
 }
 </script>
 
-<style lang='stylus'>
+<style lang='stylus' scoped>
 .user-profile
   display grid
   grid-template-columns 1fr 3fr
@@ -72,4 +80,8 @@ export default {
       margin-right auto
       padding 0 10px
       font-weight bold
+  .user-profile__articles-wrapper
+    display grid
+    grid-gap 10px
+    margin-bottom auto
 </style>
