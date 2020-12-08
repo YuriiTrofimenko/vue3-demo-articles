@@ -1,7 +1,7 @@
 <template lang='pug'>
 .user-profile
   .user-profile__user-panel
-    h1.user-profile__username @{{ state.user.username }}
+    h1.user-profile__username @{{ state.user.username }} (id = {{userId}})
     .user-profile__admin-badge(v-if="state.user.isAdmin")
       |Admin
     .user-profile__admin-badge(v-else)
@@ -12,9 +12,11 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import ArticleForm from '../components/ArticleForm'
 import ArticleItem from '../components/ArticleItem'
+import { useRoute } from 'vue-router'
+import { users } from '../assets/users'
 export default {
   name: 'UserProfile',
   components: {
@@ -22,21 +24,16 @@ export default {
     ArticleForm
   },
   setup () {
+    // используем хук для доступа к модели маршрута,
+    // на основании выбора которой был создан экземпляр текущего компонента
+    // и монтирован в router-view
+    const route = useRoute()
+    // с помощью модели маршрута получаем значение параметра адреса - userId
+    const userId = computed(() => route.params.userId)
+    console.log(users.find(u => u.id.toString() === userId.value))
     const state = reactive({
       followers: 0,
-      user: {
-        id: 1,
-        username: 'YuriiTrofimenko',
-        firstName: 'Yurii',
-        lastName: 'Trofimenko',
-        email: 'tyaa@ukr.net',
-        isAdmin: true,
-        articles: [
-          { id: 1, title: 'Hello VUE 3!', content: '1 - lorem ipsum dolor sit amet' },
-          { id: 2, title: 'Lorem ipsum dolor', content: '2 - lorem ipsum dolor sit amet' },
-          { id: 3, title: 'The third article', content: '3 - lorem ipsum dolor sit amet' }
-        ]
-      },
+      user: users.find(u => u.id.toString() === userId.value) || users[0],
       favouriteArticleId: null,
       articleTypes: [
         { value: 'draft', name: 'Draft' },
@@ -54,7 +51,8 @@ export default {
     }
     return {
       state,
-      addArticle
+      addArticle,
+      userId
     }
   },
 }
