@@ -13,8 +13,8 @@
 
 <script>
 import { reactive } from 'vue'
-import ArticleItem from './ArticleItem'
-import ArticleForm from './ArticleForm'
+import ArticleForm from '../components/ArticleForm'
+import ArticleItem from '../components/ArticleItem'
 export default {
   name: 'UserProfile',
   components: {
