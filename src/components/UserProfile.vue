@@ -1,43 +1,28 @@
 <template lang='pug'>
 .user-profile
   .user-profile__user-panel
-    h1.user-profile__username @{{ user.username }}
-    .user-profile__admin-badge(v-if="user.isAdmin")
+    h1.user-profile__username @{{ state.user.username }}
+    .user-profile__admin-badge(v-if="state.user.isAdmin")
       |Admin
     .user-profile__admin-badge(v-else)
       |User
-    .user-profile__follower-count
-      strong Followers: {{followers}}
-    div(v-if="favouriteArticleId")
-      |Favourite article is "{{user.articles.find(a => a.id === favouriteArticleId).title}}"
-    form.create-article-panel(@submit.prevent="createNewArticle" :class="{ '--exceeded': newArticleCharacterCount > 180 }")
-      strong New Article
-      label(for="newArticle")
-        strong Content
-        |  ({{ newArticleCharacterCount }}/180)
-      textarea#newArticle(rows="4" v-model="newArticleContent")
-      .create-article-type
-        label(for="newArticleType")
-          strong Type: 
-        select#newArticleType(v-model="selectedArticleType")
-          option(:value="option.value" v-for="(option, index) in articleTypes" :key="index")
-            | {{ option.name }}
-      .create-article-panel__submit
-        button
-          | Add
+    ArticleForm(@add-article="addArticle")
   .user-profile__articles-wrapper
-    ArticleItem(v-for="article in user.articles" :key="article.id" :article="article" v-on:favourite="toggleFavourite")
+    ArticleItem(v-for="article in state.user.articles" :key="article.id" :article="article")
 </template>
 
 <script>
+import { reactive } from 'vue'
 import ArticleItem from './ArticleItem'
+import ArticleForm from './ArticleForm'
 export default {
   name: 'UserProfile',
   components: {
-    ArticleItem
+    ArticleItem,
+    ArticleForm
   },
-  data () {
-    return {
+  setup () {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
@@ -59,47 +44,19 @@ export default {
       ],
       newArticleContent: '',
       selectedArticleType: 'instant',
+    })
+    function addArticle(newArticleContent) {
+      state.user.articles.unshift({
+        id: state.user.articles.length + 1,
+        title: 'Title stub',
+        content: newArticleContent
+      })
+    }
+    return {
+      state,
+      addArticle
     }
   },
-  mounted () {
-    this.followUser()
-  },
-  computed: {
-    fullName () {
-      return `${this.user.firstName} ${this.user.lastName}`
-    },
-    newArticleCharacterCount () {
-      return this.newArticleContent.length
-    }
-  },
-  watch: {
-    followers(newFollowersCount, oldFollowersCount) {
-      if(newFollowersCount < oldFollowersCount) {
-        alert(`User ${this.user.username} has gained a follower`)
-      }
-    }
-  },
-  methods: {
-    followUser () {
-      this.followers++
-    },
-    toggleFavourite (favouriteArticleId) {
-      // console.log(favouriteArticleId)
-      this.favouriteArticleId = favouriteArticleId
-    },
-    createNewArticle () {
-      if (this.newArticleContent && this.selectedArticleType !== 'draft') {
-        this.user.articles.unshift(
-          {
-            id: this.user.articles.length + 1,
-            title: 'Title stub',
-            content: this.newArticleContent
-          }
-        )
-      }
-      this.newArticleContent = ''
-    }
-  }
 }
 </script>
 
@@ -130,32 +87,4 @@ export default {
     display grid
     grid-gap 10px
     margin-bottom auto
-.create-article-panel
-  margin-top 20px
-  padding 20px 0
-  display flex
-  flex-direction column
-  textarea
-    border 1px solid #dfe3e8
-    border-radius 5px
-  .create-article-panel__submit
-    display flex
-    justify-content space-between
-    .create-article-type
-      padding 10px 0
-    button
-      padding 5px 20px
-      margin auto 0
-      border-radius 5px
-      border none
-      background-color #6c9
-      color white
-      font-weight bold
-  &.--exceeded
-    color red
-    border-color red
-    .create-article-panel__submit
-      button
-        background-color red
-        color white
 </style>
